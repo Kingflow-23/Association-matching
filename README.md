@@ -30,7 +30,8 @@ Les activités concernées en tenant compte du résumé précédent:
 
 ## Pipeline du projet 
 
-![alt text](image.png)
+![image](https://github.com/user-attachments/assets/b87738fd-d66f-42bc-b4f3-b28e05afe00a)
+
 
 Pour une explication brève de la pipeline, après scraping du texte (des associations et des fondations), nous le fournissons à un modèle de llm dans un premier temps pour constituer une base de données des différentes informations importantes possiblement contenues dans ce dernier puis dans un second temps nous lui redonnons à la fois les informations des associations et des fondations extraite pour qu’il statue sur la possibilité ou non de financement de projet. Nous stockerons de cette requête un fichier Excel du nom de chaque association qui contient toutes les fondations (et leurs informations associées) susceptibles de la financer.
 A chaque étape nous enregistrons les différents fichiers qui constituent des bases de données précieuses pour notre partenaire et les associations / fondations susceptibles de les utiliser. 
