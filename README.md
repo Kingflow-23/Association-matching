@@ -43,11 +43,13 @@ Nous avons choisis 5 associations avec lesquels faire le travail. Fidèlement à
 
 Ce travail manuel nous a permis de comprendre plus particulièrement les besoins des association sur lequel tout le travail à suivre va se baser et également d’imaginer le type de fondations que l’on imaginerait susceptibles de les financer.  Par la suite, nous avons créé sous python un dataframe composé du nom de l’association et d’un texte descriptif de son besoin ou de son champ d’intervention dans un besoin de manipulation conjointe des informations de textes des associations et des fondations que nous avons exporté sous Excel par la suite (Associations.xlsx) (Voir ci-dessous). Le texte de la colonne texte mentionnée plus haut est entré manuellement par l’utilisateur. Nous avons opté pour cette option en justifiant de notre base de données comme d’une agence de consulting à part entière qui prendrait la requête d’une association donnée en entré, la traiterait et y répondrait en fournissant un sortie le fichier Excel éponyme récapitulatif . Cependant rien n’empêcherait un scraping des informations descriptives de l’association que l’on pourrait retrouver directement sur son site officiel ou autres comme nous l’avons fait avec les fondations (Voir b)
 
-![alt text](image-15.png)
+![image](https://github.com/user-attachments/assets/2490c9b1-5ef2-4c0f-b8e6-a1fc6e5d03eb)
+
 
 Ensuite nous fournissons chaque ligne de la colonne texte au llm et nous lui demandons d’en extraire les informations clés (Nous pourrions nous contenter de travailler avec la colonne texte mais l’objectif en créant cette colonne est de rendre visible les critères clés d’évaluation que le modèle trouve nécessaire pour faire ce Matching entre une association et une fondation donnée et ainsi outrepasser la boite noire qu’est le modèle de llm), nous avons exporté le dataframe résultant  sous Excel par la suite (Associations_Lmstudio.xlsx).
 
-![alt text](image-16.png)
+![image](https://github.com/user-attachments/assets/773f5f2f-de32-4780-ad74-196efe9ac4bb)
+
 
 ### b-	Fondations 
 Dans un premier temps , nous cherchions de nous même des fondations variées capable de financer un bon nom d’associations différentes. Mais comme expliqué plus haut notre manque d’expérience a rendu cette tâche ardue et nous a ainsi poussé à demander à nos partenaires, qui s’y connaissent évidemment plus que nous, une liste de fondations pour travailler de la même sorte qu’ils nous avaient fourni des associations. Ils ont ainsi accédé à notre demande et nous ont donné une liste de 86 fondations 
@@ -65,22 +67,26 @@ Cependant, cette méthode était bien plus complexe à réaliser que ce que nous
 
 Dès les premiers sites rencontrés, nous avons compris que le travail risquait d’être compliqué du fait de la différence visuelle et évidemment du point de vue de codes des cookies. Comme illustrés dans les images ci-dessous avec respectivement les balises html des cookies d’acceptations pour les fondations 1% for the planet et Akuo fondation.
 
-![alt text](image-17.png)
-![alt text](image-18.png)
+![image](https://github.com/user-attachments/assets/da5742cc-ae04-49e0-ab0d-82dc752b5b3c)
+![image](https://github.com/user-attachments/assets/53b18987-8e35-47d0-b074-a341563a6764)
+
 
 Ce problème implique qu’un code unique de gestion de cookies pour notre idée d’automatisation totale du processus d’extraction devenait impossible. Mais nous avons tout de même tenté de faire une esquisse de code de gestion de ces sites (voir ci-dessous).
 
-![alt text](image-19.png)
+![image](https://github.com/user-attachments/assets/550ea785-3672-44c7-b17b-2e821da6fb3e)
+
 
 C’est bien évidement qu’une partie superficielle du code complet mais il s’agit ici simplement d’expliquer l’idée que nous avons eu (surtout qu’elle n’a pas fonctionnée comme nous l’espérions), les résultats obtenus et les conclusions que nous avons pu en tirer.
 L’idée est que bien que le code derrière le click sur un bouton de cookies soit ‘’imprévisible’’, nous avons pu identifier des paternes dans la créations de boutons de cookies et avons basé toute notre stratégie dessus. Après étude individuelles des sites en possédant, nous avons pu émettre l’hypothèse que les cookies étaient toutes soient sous balise "button" ou "a", donc en se basant sur cette logique nous n’aurions qu’à produire un code qui nous permette d’interagir avec ces balises. Cependant, il nous manquait une information supplémentaire cruciale qui nous permettrait de reconnaitre le bouton cookie avec lequel nous voulons interagir, et quoi de plus évident que le mot « accepter » partagé sur une majorité de site pour une mettre sur la piste d’une bonne métrique. Cependant, loin d’être suffisant nous avons constitué une liste de mots couramment utilisés dans les boutons d’acceptations de cookies et l’avons mis dans une variable item_cookies à chercher dans le nom (L’ID ou la classe) de chacune des balises mentionnées plus haut pour effectuer un potentiel click (Voir exemple ci-dessous). Avec simplement cette procédure nous avons réussi à gérer 58 sur 65 sites (89%) possédant des cookies.
 
-![alt text](image-20.png)
+![image](https://github.com/user-attachments/assets/bde866bb-7021-4090-b397-b639da636f8b)
+
 
 Soucieux d’expliquer le non-fonctionnement de notre méthode sur les 11% de sites restants nous avons fait une étude au cas par cas de chacun d’entre eux et avons fait des découvertes qui nous ont fait comprendre que notre seul code ne suffirait pas. En fait, il y a des boutons en arrière-plan qui contiennent des informations suffisantes pour être considérés comme des cookies bien qu’ils n’en soient pas en réalité. Et ce genre d’éléments fait stopper le code totalement et nous obtenons un ElementNotInteratableExecption. Nous avons créé une liste de blocking words qui sont des mots qui ne seront pas pris en compte pour le choix des boutons qui les contiennent et cela nous a permis de passer de 89% à 92% (60 sites) de cookies gérés. C’est un résultat satisfaisant mais sachant que le travail sera non supervisé par la suite il risque forcément de planter à un moment et nous ne pouvons décemment pas accepter cette éventualité surtout quand on sait que cette étape est la première d’un long processus qui n’a même pas été mentionnée tellement elle est considérée simple … 
 Exemple de l’exception expliquée plus haut :
 
-![alt text](image-21.png)
+![image](https://github.com/user-attachments/assets/32f91e6a-e458-4f7f-afa6-8d5efd3bb85b)
+
 
 - Format des sites trop différents 
 
@@ -93,17 +99,20 @@ Pour toutes ces raisons nous avons décidé de changer d’approche.
 Comme expliqué précédemment nous n’avons pas pu mettre en place notre idée initiale, nous avons dû nous rabattre sur une option réalisable en gardant en tête de rendre le processus le plus automatisé possible.
 La seule idée qui nous est venue en tête est la création d’un dataset qui sera créé par itération dans des classes qui correspondent respectivement à un site et auront de même respectivement des méthodes adaptés pour la gestion des cookies et le scraping du texte qui nous intéresse quelque soit sa position dans le site. Nous faisons également ces itérations dans des navigateurs isolés pour qu’en cas d’échec dans un site le processus continue avec le suivant …
 
-![alt text](image-22.png)
+![image](https://github.com/user-attachments/assets/4016d828-b7d2-4fef-8ecc-9098003af5f6)
+
 
 Après l’itération dans tout les sites et exécutions des tâches demandées, nous obtenons un dataframe du même format que celui fait pour les associations précédemment et stockées dans un Excel (Fondations.xlsx). (Voir ci-dessous).
 
-![alt text](image-23.png)
+![image](https://github.com/user-attachments/assets/6444b4ea-a233-4a46-b664-fd5a79be1576)
+
 
 Ensuite pareillement que précédemment, nous fournissons chaque ligne de la colonne texte au llm et nous lui demandons d’en extraire les informations fournies par le partenaires (date butoir, don moyen, période de dépôt …) qui permettront de gérer le dépôt et suivi d’une demande de financement nous avons exporté le dataframe résultant  sous Excel par la suite (Fondations_Lmstudio.xlsx).
 
 Les informations / colonnes demandées au modèles sont les suivantes : 
 
-![alt text](image-24.png)
+![image](https://github.com/user-attachments/assets/1b77eae4-91d8-463f-8d04-cf909c6f0bf6)
+
 
 L’interprétation de l’importance des colonnes est compréhensible en se remettant dans le cadre du domaine expliqué dès le départ.
  
@@ -111,14 +120,15 @@ L’interprétation de l’importance des colonnes est compréhensible en se rem
 
 Arrivé en fin de projet, il nous restait assez de temps pour accéder à une demande supplémentaire de nos partenaires qui était le traitement de pdf pour en extraire le texte et faire le même processus de travail qu’avec des fondations. Ce n’est pas spécialement dur nous avons utilisé le module PyPDF2 et particulièrement sa classe PdfReader.
 
-![alt text](image-25.png)
-![alt text](image-26.png)
+![image](https://github.com/user-attachments/assets/28e2de2f-3cfa-4c46-be62-635d0772b21a)
+
 
 Après avoir obtenu cette base de données il suffit de la traiter comme montré plus haut avec les fondations. Les étapes 1 et 2 ainsi terminées, il ne reste plus qu’à passer à l’étape final du matching et juger des résultats obtenus.
 
 ## Matching
 ### TfidfVectorizer – NLP
-![alt text](image-27.png)
+![image](https://github.com/user-attachments/assets/0175679c-9a85-441a-a3cb-00629efda1c3)
+
 
 Modèle appliqué sur notre base de données
 
@@ -129,13 +139,15 @@ Nous avons rencontré un soucis concernant le pricing, cad l’utilisation de la
 
 Voir ci-dessous un exemple d’utilisation du code avec le prompt et avec la clé d’api pour extraire les informations demandées. 
 
-![alt text](image-28.png)
+![image](https://github.com/user-attachments/assets/bf7293aa-75fb-4f6b-b390-9f4b37bec871)
+
 
 ### Lmstudio
 
 Pour éviter le pricing initié par l’utilisation de la clé d’api, nous avons décidé d’utiliser le llm localement pour faire les travaux demandés. Nous avons utilisé le modèle Mistral 7B par soucis d’exigence RAM.
 
-![alt text](image-29.png)
+![image](https://github.com/user-attachments/assets/15760f84-6c5b-4b8d-8547-367010918315)
+
 
 Cependant, cette méthode est extrêmement lente et demande des ressources logicielles trop importantes. Ce qui laisse envisager que la gratuité aurait ses limites concernant l’ampleur de ce projet.
 
@@ -155,7 +167,8 @@ Nous sommes conscient d’avoir mentionné plus haut que ce code était « impar
 
 Nous avons utilisons des boucles imbriquées pour constituer le query sur lequel la recherche se basera pour ensuite récupérer les fondations résultantes (Nous en faisons un nettoyage superficiel en supprimant les réseaux sociaux et autres sites inintéressant cette liste sera surement à modifier par les partenaire en fonction de l’ampleur des recherches a faire).
 
-![alt text](image-30.png)
+![image](https://github.com/user-attachments/assets/68c0d86f-bcbc-42b4-b984-73a712630bf9)
+
 
 Ensuite avec selenium récupèrera le nombre de sites spécifiés de par l’interface et ensuite pour éviter de se répéter fera le même traitement qu’expliqué dans II-b fondations avec traitement par le llm…
 
@@ -165,14 +178,16 @@ Ensuite avec selenium récupèrera le nombre de sites spécifiés de par l’int
 
 La sortie de notre code est la création d’un fichier Excel, du nom de l’association qui contient les informations des fondations qui matchent respectivement l’association considérée.
 
-![alt text](image-31.png)
-![alt text](image-32.png)
+![image](https://github.com/user-attachments/assets/9ee9b61b-e248-4209-9341-456d96c5737c)
+![image](https://github.com/user-attachments/assets/1ce01a58-2bf9-49f6-bdd9-d06d4332c2d7)
+
 
 ### 2e méthode : Base de données de fondations mobiles.
 
 L’interface a pour but de créer à chaque fin de traitement de fondations, le fichier Excel mis a jour contenant les informations similaires à celles obtenues dans la méthodes précédentes. 
 
-![alt text](image-33.png)
+![image](https://github.com/user-attachments/assets/26827cb2-7580-4f8e-973e-1f81f7de56d3)
+
 
 Nous obtenons un résultat similaire au précédent mais c’est principalement juste la méthode d’obtention de se dernier qui est différente.
 
@@ -188,29 +203,34 @@ Installation de lm studio : https://lmstudio.ai/
 Manipulation
 
  
-![alt text](image-1.png)
+![image](https://github.com/user-attachments/assets/5d2c1e76-5cd9-44c8-8223-8b9550a5a8fd)
+
  
-![alt text](image-2.png)
+![image](https://github.com/user-attachments/assets/e03080f5-ee96-46b5-9be1-db676c7e36d2)
+
 
 Nous avons téléchargé/utilisé le modèle « Mistral instruct V0.1 ». Mais selon vos performances logicielles vous pouvez opter pour un modèle plus puissant. Il faudra pour cela modifier le nom du modèle utilisé dans le code 
 
- ![alt text](image-3.png)
+![image](https://github.com/user-attachments/assets/477998ef-2c87-4ec8-870f-8cd5c0abd0af)
+
 
 NB : Toute modification dans le code ne s’appliquera pas automatiquement dans l’exécutable (l’application), il faudra en créer un nouveau de la façon suivante (S’aider de GPT si besoin).
 
  
-![alt text](image-4.png)
+![image](https://github.com/user-attachments/assets/416bc593-2ee1-41c6-baf7-9904b3aa4cb9)
+
 
 Nous avons défini un prompt général au modèle via le code, mais vous pouvez le repréciser depuis l’application si besoin (Voir-ci-dessous)
 
- ![alt text](image-5.png)
+![image](https://github.com/user-attachments/assets/9d37c232-b8c7-49b7-b095-43f4623b8f03)
+
 
 
 Pour ce qui est du format de la réponse, on vous recommande de tout effacer en préfixe et suffixe mais si besoin vous pouvez le modifier depuis l’application. Prendre en compte que nous avons limiter la taille de la réponse.
 
- 
-![alt text](image-6.png)
- ![alt text](image-7.png)
+![image](https://github.com/user-attachments/assets/1079e6df-81f6-4af8-8c0b-8fae7dd49ac8)
+![image](https://github.com/user-attachments/assets/713c7995-dd40-4b22-b8bf-ca1a2825161e)
+
 
 Nous recommandons cette configuration bien qu’elle n’ait pas de grand impact sur le résultat.
 
@@ -218,7 +238,7 @@ Enfin toujours dans dans lm studio, dans la partie « local server », appuyez s
 
 #### Interface graphique
 
-![alt text](image-9.png)
+![image](https://github.com/user-attachments/assets/173bb1b9-0f81-45ba-938d-ec06d8c75cf0)
 
 
 Au cas où le schéma ci-dessus n’est pas suffisant, l’idée était juste de montrer à quel champ de texte correspond quel bouton …
@@ -253,7 +273,8 @@ Nous n’avons pas l’intention d’expliquer ici la totalité du code. ChatGPT
 
 Cette classe est à la base de l’appel du modèle de LLM, pour les traitement demandés soit le remplissage des colonnes 
 
- ![alt text](image-10.png)
+![image](https://github.com/user-attachments/assets/a6fdbded-b09e-44e7-b6a6-2fcc42f840a0)
+
 
 -	Si vous avez une clé d’API (d’openai de préférence, nous n’en avons pas testé d’autres même si nous supposons que le traitement pourrait être similaire) et que vous voulez l’utiliser pour rendre le code plus rapide et plus précis, il suffit de la mettre dans le champ api_key à la place de « not-needed » (ou quoi que ce soit d’autre Entre les crochets …) et de supprimer le base_url =…
 Il faudra également ajuster le nom du modèle à utiliser en fonction de l’origine de la clé d’api utilisé (disponible depuis le site considéré ou via recherche google)
@@ -261,7 +282,8 @@ Il faudra également ajuster le nom du modèle à utiliser en fonction de l’or
 NB : Nous tenons a rappeler que nous nous pouvons en aucun garantir le fonctionnement de l’utilisation de l’API sur le long terme du fait des limitations par minutes / heures / jour.
 
 
- ![alt text](image-11.png)
+![image](https://github.com/user-attachments/assets/b0d7d11e-ee0e-43c5-8155-d0a39029df20)
+
 
 -	Dans le champ user_message se trouve le prompt donné au modèle pour le traitement, si vous voulez modifier la phrase, vous pouvez le faire directement
 Vous pouvez également personnaliser la « personnalité » du modèle dans le champ content 
@@ -283,7 +305,8 @@ Ajout de colonne(s).
 -	Vous pouvez de ce fait en principe être à même à ce niveau de créer une nouvelle colonne cependant pour le faire il faudra ajouter la ligne self.fondations[‘’nom_de_la_colonne’’] = [None] dans la classe UI_MainWindow dans la fonction setupUi à la ligne 836 avec les autres colonnes.
 
  
-![alt text](image-12.png)
+![image](https://github.com/user-attachments/assets/e4b45df0-3dd3-4f04-a405-3f3043e4d0a1)
+
 
 ### 2-	Classe UI_MainWindow
 
@@ -296,11 +319,13 @@ La seule fonction susceptible d’être modifiée est la fonction principale « 
 -	Click_cookies : fonction pour cliquer sur les cookies.
 Vous pouvez ajouter des blocking_word (mot sur lesquels on ne clickera pas même si contenus dans les boutons rencontrés) ou des item_cookies (mot sur lesquels on clickera si contenus dans le bouton rencontré). Il n’est pas spécialement nécessaire de modifier cette partie du code sauf. 
  
-![alt text](image-13.png)
+![image](https://github.com/user-attachments/assets/2ab12ba9-7cf0-481f-9c99-2fcfda94db7e)
+
 
 -	Search : fonction pour lancer la recherche 
  
-![alt text](image-14.png)
+![image](https://github.com/user-attachments/assets/0d440c9a-4506-44fa-ab41-86488807d10d)
+
 
 Vous pouvez ajouter des sites qui ne seront pas pris en compte dans la recherche.
 
@@ -329,7 +354,8 @@ Nous n’avons pas été à même de créer un modèle d’alerte par mail ou pa
 
 Le modèle que nous avions l’intention d’implémenter est la suivante.
 
-![alt text](image-34.png)
+![image](https://github.com/user-attachments/assets/c5da5520-ccf6-4483-be9d-d1f93648bc85)
+
 
 Il suffit d’ajouter comme conditions de mettre l’entrée de 5 nouvelles fondations par exemple dans la base de donnée et d’envoyer un mail à la personne considérée. 
 
