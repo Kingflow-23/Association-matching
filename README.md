@@ -3,7 +3,7 @@
 # Recherche et Structuration d'Opportunités de Financement pour les Associations
 
 <p style="text-align: center; color: red;">
-  Ce projet a été réalisé par moi-même et quelques amis dans le cadre d'un projet scolaire. Si vous souhaitez utiliser ce projet, n'hésitez pas mais mentionnez-nous simplement dans les crédits. Merci et n'hésitez pas à laisser un commentaire si vous avez des remarques sur notre travail !! ✨
+  Ce projet a été réalisé par moi-même et quelques amis dans le cadre d'un projet scolaire. Si vous souhaitez utiliser ce projet, n'hésitez pas mais mentionnez ce repo simplement dans les crédits. Merci et n'hésitez pas à laisser un commentaire si vous avez des remarques sur notre travail !! ✨
   <p style="text-align: center; color: green;">
   KF23
   </p>
@@ -264,6 +264,9 @@ Pas de restriction concernant l’entrée du chemin dans le champ de texte assoc
 
 NB : Prendre en compte le fait suivant en lançant un code : 5 fondations pour 6 champs dans 6 zones données donneront une itération dans 6 * 6 * 5 = 180 fondations plus le traitement associé … Prendra relativement du temps …
 
+#### Demo
+
+https://github.com/user-attachments/assets/8dae3e3a-42dc-4951-ab3a-a7f6e3e7c0fe
 
 ## II / Documentation du code
 
@@ -279,7 +282,7 @@ Cette classe est à la base de l’appel du modèle de LLM, pour les traitement 
 -	Si vous avez une clé d’API (d’openai de préférence, nous n’en avons pas testé d’autres même si nous supposons que le traitement pourrait être similaire) et que vous voulez l’utiliser pour rendre le code plus rapide et plus précis, il suffit de la mettre dans le champ api_key à la place de « not-needed » (ou quoi que ce soit d’autre Entre les crochets …) et de supprimer le base_url =…
 Il faudra également ajuster le nom du modèle à utiliser en fonction de l’origine de la clé d’api utilisé (disponible depuis le site considéré ou via recherche google)
 
-NB : Nous tenons a rappeler que nous nous pouvons en aucun garantir le fonctionnement de l’utilisation de l’API sur le long terme du fait des limitations par minutes / heures / jour.
+NB : Nous tenons a rappeler que nous nous pouvons en aucun cas garantir le fonctionnement de l’utilisation de l’API sur le long terme du fait des limitations par minutes / heures / jour.
 
 
 ![image](https://github.com/user-attachments/assets/b0d7d11e-ee0e-43c5-8155-d0a39029df20)
